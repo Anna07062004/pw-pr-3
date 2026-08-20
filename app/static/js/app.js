@@ -1,13 +1,38 @@
 const uploadBtn = document.getElementById("upload");
-const fileInput = document.getElementById("fileInput")
+const fileInput = document.getElementById("fileInput");
+const upActions = document.getElementById("upActions");
+const upSend = document.getElementById("upSend");
+const upDelete = document.getElementById("upDelete");
+const uploadMusic = document.getElementById("uploadMusic");
+const transcriptionBody = document.getElementById("transcriptionBody");
+const fileName = document.getElementById("fileName");
+const fileSize = document.getElementById("fileSize");
+
+let uploadFile;
+
 
 uploadBtn.addEventListener("click", () => fileInput.click());
 
 fileInput.addEventListener("change", () => {
     const file = fileInput.files[0];
 
-    if (!file) return;
+    if(!file) return;
 
+    uploadFile = file;
+
+    uploadMusic.removeAttribute("hidden");
+    upActions.removeAttribute("hidden");
+});
+
+upSend.addEventListener("click", () => {
+    sendFile(uploadedFile);
+});
+
+upDelete.addEventListener("click", () => {
+    
+})
+
+function sendFile(file) {
     const formData = new FormData();
     formData.append("audio", file);
 
@@ -19,16 +44,15 @@ fileInput.addEventListener("change", () => {
             const percent = Math.round(
                 (event.loaded / event.total) * 100
             );
-
-            console.log(`Загруженно: ${percent}`)
+            console.log(`Загружено: ${percent}`)
         }
     };
 
     xhr.onload = () => {
-        if (xhr.status >= 200 && xhr.status < 300) {
+        if(xhr.status >= 200 && xhr.status < 300) {
             console.log(`Успех:`, JSON.parse(xhr.responseText));
         } else {
-            console.log("Ошибка сервера: ", xhr.status);
+            console.log("Ошибка сервера:", xhr.status);
         }
     }
 
@@ -37,5 +61,4 @@ fileInput.addEventListener("change", () => {
     };
 
     xhr.send(formData);
-
-})
+}
